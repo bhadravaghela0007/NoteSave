@@ -37,6 +37,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+//            Hello
             NoteSaveTheme {
                 val poppinsFontFamily = FontFamily(Font(R.font.poppins_medium))
                 val poppinsFontFamilyBold = FontFamily(Font(R.font.poppins_bold))
