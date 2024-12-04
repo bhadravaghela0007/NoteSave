@@ -1,5 +1,6 @@
 package com.example.notesave
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
@@ -34,6 +35,28 @@ class MydataClass(var context: Context) : SQLiteOpenHelper(context, "mydb.db",nu
         var cursor = writableDatabase.rawQuery(select,null)
 
         return cursor
+    }
+
+//    fun updateData(id : Int,newTitle : String, newSubTitle : String)
+//    {
+//        var update = "UPDATE note SET title ='${newTitle}', subtitle = '${newSubTitle}'"
+//        writableDatabase.execSQL(update)
+//    }
+
+    fun updateData(id: Int, title: String, subtitle: String): Int {
+        val db = writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put("title", title)
+        contentValues.put("subtitle", subtitle)
+
+
+        return db.update("note", contentValues, "id=?", arrayOf(id.toString()))
+    }
+
+    fun deleteData(id : Int)
+    {
+        var delete = "DELETE FROM note WHERE id = '${id}' "
+        writableDatabase.execSQL(delete)
     }
 
 }

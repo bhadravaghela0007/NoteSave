@@ -85,6 +85,8 @@ class MainActivity : ComponentActivity() {
                                     .clickable
                                     {
                                         val intent = Intent(this@MainActivity, InnerScreen::class.java)
+//                                        intent.putExtra("allData","${allDatalist[index].title},${allDatalist[index].subtitle}")
+                                        intent.putExtra("allData",allDatalist[index])
                                         startActivity(intent)
                                     }, shape = RoundedCornerShape(10.dp)
                             ) {
