@@ -1,5 +1,6 @@
 package com.example.notesave
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -9,6 +10,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Person
@@ -40,6 +42,9 @@ class InnerScreen : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             NoteSaveTheme {
+
+                var titleText = remember { mutableStateOf("") }
+                var subtitleText = remember { mutableStateOf("") }
 
                 val poppinsFontFamily = FontFamily(Font(R.font.poppins_medium))
                 val poppinsFontFamilyBold = FontFamily(Font(R.font.poppins_bold))
@@ -81,12 +86,17 @@ class InnerScreen : ComponentActivity() {
 
                                 }
                             )
+                            var mydatabase = MydataClass(applicationContext)
                             Icon(
-                                imageVector = Icons.Default.MoreVert,
+                                imageVector = Icons.Default.Done,
                                 contentDescription = "More Options",
                                 tint = Color.Gray,
-                                modifier = Modifier.clickable {
+                                modifier = Modifier
+                                    .clickable {
+                                        mydatabase.insertData(title = titleText.value, subtitle = subtitleText.value)
 
+                                        val intent = Intent(this@InnerScreen, MainActivity::class.java)
+                                        startActivity(intent)
                                 }
                             )
                         }
@@ -100,10 +110,10 @@ class InnerScreen : ComponentActivity() {
 
                         Spacer(modifier = Modifier.height(8.dp))
 
-                        var titleText by remember { mutableStateOf("") }
-                        TextField(
-                            value = titleText,
-                            onValueChange = { titleText = it },
+
+                        OutlinedTextField(
+                            value = titleText.value,
+                            onValueChange = { titleText.value = it },
                             placeholder = {
                                 Text(
                                     text = "Title",
@@ -127,10 +137,10 @@ class InnerScreen : ComponentActivity() {
                         )
 
                         Spacer(modifier = Modifier.height(6.dp))
-                        var subtitleText by remember { mutableStateOf("") }
+
                         OutlinedTextField(
-                            value = subtitleText,
-                            onValueChange = { subtitleText = it },
+                            value = subtitleText.value,
+                            onValueChange = { subtitleText.value = it },
                             placeholder = {
                                 Text(
                                     text = "Note",

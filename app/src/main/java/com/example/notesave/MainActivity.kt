@@ -1,6 +1,7 @@
 package com.example.notesave
 
 import android.content.Intent
+import android.database.Cursor
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -36,13 +37,21 @@ import androidx.compose.ui.unit.sp
 import com.example.notesave.ui.theme.NoteSaveTheme
 
 class MainActivity : ComponentActivity() {
+    companion object
+    { lateinit var data: MydataClass }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        data = MydataClass(this)
         setContent {
             NoteSaveTheme {
                 val poppinsFontFamily = FontFamily(Font(R.font.poppins_medium))
                 val poppinsFontFamilyBold = FontFamily(Font(R.font.poppins_bold))
+
+                var allDatalist = fetchAllData()
+
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
                     floatingActionButton = {
@@ -66,20 +75,17 @@ class MainActivity : ComponentActivity() {
                             .padding(top = 10.dp),
                         columns = GridCells.Fixed(2)
                     ) {
-                        items(20) { index ->
+                        items(allDatalist.size) { index ->
                             Surface(shadowElevation = 10.dp ,
                                 modifier = Modifier
                                     .padding(
                                         start = 15.dp, top = 15.dp, end = 15.dp, bottom = 15.dp
                                     )
                                     .height(200.dp)
-//                                    .border(
-//                                        BorderStroke(3.dp, color = Color.Gray),
-//                                        shape = RoundedCornerShape(10.dp),
-//                                    )
                                     .clickable
                                     {
-
+                                        val intent = Intent(this@MainActivity, InnerScreen::class.java)
+                                        startActivity(intent)
                                     }, shape = RoundedCornerShape(10.dp)
                             ) {
                                 Column(
@@ -100,7 +106,7 @@ class MainActivity : ComponentActivity() {
                                 )
                                 {
                                     Text(
-                                        text = "Title",
+                                        text = allDatalist[index].title,
                                         fontSize = 20.sp,
                                         fontFamily = poppinsFontFamilyBold
                                     )
@@ -111,7 +117,7 @@ class MainActivity : ComponentActivity() {
                                 )
                                 {
                                     Text(
-                                        text = "SubTitle",
+                                        text = allDatalist[index].subtitle,
                                         fontSize = 20.sp,
                                         fontFamily = poppinsFontFamily
                                     )
@@ -122,6 +128,30 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    private fun fetchAllData(): ArrayList<DataDetailsModel>
+    {
+        val dataList = ArrayList<DataDetailsModel>()
+
+        val cursor : Cursor = data.readableDatabase.rawQuery("SELECT * FROM note",null)
+
+        cursor.use {
+
+            if (it.moveToFirst()) {
+                do {
+                    val id = it.getInt(0)
+                    val title = it.getString(1)
+                    val subtitle = it.getString(2)
+                    var data = DataDetailsModel(
+                        id = id, title = title, subtitle = subtitle
+                    )
+                    dataList.add(data)
+
+                } while (it.moveToNext())
+            }
+        }
+        return dataList
     }
 }
 
