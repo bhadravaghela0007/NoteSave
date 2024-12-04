@@ -10,6 +10,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -26,8 +27,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.notesave.ui.theme.NoteSaveTheme
@@ -37,7 +40,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-//            Hello
             NoteSaveTheme {
                 val poppinsFontFamily = FontFamily(Font(R.font.poppins_medium))
                 val poppinsFontFamilyBold = FontFamily(Font(R.font.poppins_bold))
@@ -45,12 +47,18 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     floatingActionButton = {
                         FloatingActionButton(
-                            onClick = { }, containerColor = MaterialTheme.colorScheme.primary,
+                            onClick = {
+                                val intent = Intent(this@MainActivity, InnerScreen::class.java)
+                                startActivity(intent)
+                            }, containerColor = MaterialTheme.colorScheme.primary,
                             contentColor = Color.White
                         ) {Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Contact") }
                     }
                 ) { innerPadding ->
-                    Column(modifier = Modifier) { }
+                    Column(modifier = Modifier.padding(top = 20.dp))
+                    {
+
+                    }
 
                     LazyVerticalGrid(
                         modifier = Modifier
@@ -59,16 +67,16 @@ class MainActivity : ComponentActivity() {
                         columns = GridCells.Fixed(2)
                     ) {
                         items(20) { index ->
-                            Surface(
+                            Surface(shadowElevation = 10.dp ,
                                 modifier = Modifier
                                     .padding(
                                         start = 15.dp, top = 15.dp, end = 15.dp, bottom = 15.dp
                                     )
                                     .height(200.dp)
-                                    .border(
-                                        BorderStroke(3.dp, color = Color.Black),
-                                        shape = RoundedCornerShape(10.dp)
-                                    )
+//                                    .border(
+//                                        BorderStroke(3.dp, color = Color.Gray),
+//                                        shape = RoundedCornerShape(10.dp),
+//                                    )
                                     .clickable
                                     {
 
@@ -76,7 +84,19 @@ class MainActivity : ComponentActivity() {
                             ) {
                                 Column(
                                     modifier = Modifier
-                                        .padding(top = 20.dp, start = 15.dp)
+                                        .padding(top = 10.dp, start = 15.dp)
+                                )
+                                {
+                                    Text(
+                                        text = "Date",
+                                        fontSize = 16.sp,
+                                        color = Color(0xFFA5A5A5),
+                                        fontFamily = poppinsFontFamilyBold
+                                    )
+                                }
+                                Column(
+                                    modifier = Modifier
+                                        .padding(top = 35.dp, start = 15.dp)
                                 )
                                 {
                                     Text(
@@ -87,7 +107,7 @@ class MainActivity : ComponentActivity() {
                                 }
                                 Column(
                                     modifier = Modifier
-                                        .padding(top = 45.dp, start = 15.dp)
+                                        .padding(top = 58.dp, start = 15.dp)
                                 )
                                 {
                                     Text(

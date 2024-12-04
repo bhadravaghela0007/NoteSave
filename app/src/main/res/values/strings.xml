@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">NoteSave</string>
+    <string name="title_activity_inner_screen">InnerScreen</string>
 </resources>
